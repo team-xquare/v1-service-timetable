@@ -17,25 +17,22 @@ class AuthenticationFilter : OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (request.getHeader("Request-User-Id") == null ||
-            request.getHeader("Request-User-Role") == null ||
-            request.getHeader("Request-User-Authorities") == null
-        ) {
+        val userId: String? = request.getHeader("Request-User-Id")
+        val userRole: UserRole? = request.getHeader("Request-User-Role")?.run { UserRole.valueOf(this) }
+        val userAuthorities: List<String>? = request.getHeader("Request-User-Authorities")?.run { listOf(this) }
+
+        if (userId == null || userRole == null || userAuthorities == null) {
             filterChain.doFilter(request, response)
             return
         }
 
-        val userId = request.getHeader("Request-User-Id")
-        val userRole: UserRole = UserRole.valueOf(request.getHeader("Request-User-Role"))
-        val userAuthorities: List<String> = listOf(request.getHeader("Request-User-Authorities"))
         val authorities: MutableCollection<SimpleGrantedAuthority> = ArrayList()
-
         for (userAuthority in userAuthorities) {
             authorities.add(SimpleGrantedAuthority(userAuthority))
         }
 
         authorities.add(SimpleGrantedAuthority("ROLE_${userRole.name}"))
-        val userDetails: UserDetails = User(userId, "", emptyList())
+        val userDetails: UserDetails = User(userId, "", authorities)
         val authentication: Authentication =
             UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
         SecurityContextHolder.getContext().authentication = authentication
