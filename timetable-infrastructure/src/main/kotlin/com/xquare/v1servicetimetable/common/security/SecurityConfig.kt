@@ -1,5 +1,6 @@
 package com.xquare.v1servicetimetable.common.security
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -7,7 +8,9 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(
+    private val objectMapper: ObjectMapper
+) {
 
     @Bean
     @Throws(Exception::class)
@@ -24,7 +27,7 @@ class SecurityConfig {
             .anyRequest().permitAll()
 
         http
-            .apply(FilterConfig())
+            .apply(FilterConfig(objectMapper))
 
         return http.build()
     }
