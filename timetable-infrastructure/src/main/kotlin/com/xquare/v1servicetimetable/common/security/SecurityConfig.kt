@@ -23,6 +23,9 @@ class SecurityConfig {
             .authorizeRequests()
             .anyRequest().permitAll()
 
+        http
+            .apply(FilterConfig())
+
         return http.build()
     }
 }
