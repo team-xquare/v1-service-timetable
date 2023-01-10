@@ -7,7 +7,7 @@ ENV CLOUD_CONFIG_USERNAME ${CLOUD_CONFIG_USERNAME}
 ARG CLOUD_CONFIG_PASSWORD
 ENV CLOUD_CONFIG_PASSWORD ${CLOUD_CONFIG_PASSWORD}
 
-COPY ./feed-infrastructure/build/libs/*.jar app.jar
+COPY ./timetable-infrastructure/build/libs/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]
