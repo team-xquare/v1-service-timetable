@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
 
 @Table(name = "tbl_changed_timetable")
 @Entity
-class ChangedTimetableEntity(
+class TimetableEntity(
     override val id: UUID,
 
     @field:NotNull
@@ -28,17 +28,20 @@ class ChangedTimetableEntity(
     @Column(columnDefinition = "TINYINT(2)")
     val weekDay: Int,
 
-    @field:NotNull
     @Column(columnDefinition = "DATE")
-    val date: LocalDate = LocalDate.now(),
+    val date: LocalDate,
 
     @field:NotNull
     @Column(columnDefinition = "TINYINT(1)")
     val grade: Int,
 
     @field:NotNull
-    @Column(columnDefinition = "TINYINT(1)", nullable = false)
-    val `class`: Int,
+    @Column(columnDefinition = "TINYINT(1)")
+    val classNumber: Int,
+
+    @field:NotNull
+    @Column(columnDefinition = "VARCHAR(255)")
+    val type: String,
 
     @field:NotNull
     @ManyToOne(fetch = FetchType.LAZY)

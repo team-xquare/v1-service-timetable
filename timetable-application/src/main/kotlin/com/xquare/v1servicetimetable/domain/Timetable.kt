@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Aggregate
-class ChangedTimetable(
+class Timetable(
     val id: UUID,
     val period: Int,
     val beginTime: LocalDateTime,
@@ -14,6 +14,7 @@ class ChangedTimetable(
     val weekDay: Int,
     val date: LocalDate,
     val grade: Int,
-    val `class`: Int,
+    val classNumber: Int,
+    val type: String,
     val subjectId: UUID
 )
