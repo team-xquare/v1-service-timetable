@@ -1,15 +1,12 @@
 package com.xquare.v1servicetimetable.adapter.out.persistance.domain
 
 import com.xquare.v1servicetimetable.common.entity.BaseUUIDEntity
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
-@EntityListeners(AuditingEntityListener::class)
 @Table(name = "tbl_changed_timetable")
 @Entity
 class ChangedTimetableEntity(
@@ -32,9 +29,8 @@ class ChangedTimetableEntity(
     val weekDay: Int,
 
     @field:NotNull
-    @CreatedDate
     @Column(columnDefinition = "DATE")
-    var date: LocalDate,
+    val date: LocalDate = LocalDate.now(),
 
     @field:NotNull
     @Column(columnDefinition = "TINYINT(1)")
