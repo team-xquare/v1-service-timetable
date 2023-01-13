@@ -7,7 +7,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
-@Table(name = "tbl_changed_timetable")
+@Table(name = "tbl_timetable")
 @Entity
 class TimetableEntity(
     override val id: UUID,
