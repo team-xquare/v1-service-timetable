@@ -1,6 +1,7 @@
 package com.xquare.v1servicetimetable.adapter.out.persistance.domain
 
 import com.xquare.v1servicetimetable.common.entity.BaseUUIDEntity
+import com.xquare.v1servicetimetable.domain.TableType
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
@@ -39,9 +40,10 @@ class TimetableEntity(
     @Column(columnDefinition = "TINYINT(1)")
     val classNumber: Int,
 
+    @Enumerated(EnumType.STRING)
     @field:NotNull
-    @Column(columnDefinition = "VARCHAR(255)")
-    val type: String,
+    @Column(columnDefinition = "CHAR(7)")
+    val type: TableType,
 
     @field:NotNull
     @ManyToOne(fetch = FetchType.LAZY)

@@ -15,6 +15,6 @@ class Timetable(
     val date: LocalDate,
     val grade: Int,
     val classNumber: Int,
-    val type: String,
+    val type: TableType,
     val subjectId: UUID
 )
