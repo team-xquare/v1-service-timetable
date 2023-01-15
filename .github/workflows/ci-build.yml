@@ -18,7 +18,7 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
 
-      - name: Gradle Test
+      - name: Gradle Build
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
