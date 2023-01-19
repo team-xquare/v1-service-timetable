@@ -36,7 +36,7 @@ class TimetableCron(
             pSize = neisProperties.size,
             regionCode = neisProperties.region,
             schoolCode = neisProperties.school,
-            year = "${LocalDate.now().year - 1}",
+            year = "${LocalDate.now().year}",
             semester = semester,
             grade = grade,
             `class` = `class`,
@@ -50,9 +50,9 @@ class TimetableCron(
     private fun getMondayOrFridayDate(type: String): LocalDate {
         // TODO: cron 세부날짜 정하기
         val date: LocalDate = if (LocalDate.now().monthValue < 7) {
-            LocalDate.of(LocalDate.now().year - 1, 3, 14)
+            LocalDate.of(LocalDate.now().year, 3, 14)
         } else {
-            LocalDate.of(LocalDate.now().year - 1, 8, 8)
+            LocalDate.of(LocalDate.now().year, 8, 8)
         }
 
         val dateNumber: Int = date.dayOfWeek.value
