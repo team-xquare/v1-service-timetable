@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull
 @Table(name = "tbl_subject")
 @Entity
 class SubjectEntity(
-    override val id: UUID,
+    override val id: UUID = UUID.randomUUID(),
 
     @field:NotNull
     @Column(columnDefinition = "VARCHAR(20)")
