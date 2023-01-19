@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull
 @Table(name = "tbl_timetable")
 @Entity
 class TimetableEntity(
-    override val id: UUID,
+    override val id: UUID = UUID.randomUUID(),
 
     @field:NotNull
     @Column(columnDefinition = "TINYINT(1) DEFAULT 0")
