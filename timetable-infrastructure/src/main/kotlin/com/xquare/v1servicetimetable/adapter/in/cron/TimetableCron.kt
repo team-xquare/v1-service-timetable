@@ -68,10 +68,8 @@ class TimetableCron(
         }
     }
 
-    private fun dataProcessing(data: String): List<TimetableElement> {
-        val timetableList: MutableList<TimetableElement> = mutableListOf()
-        JSONObject(data)
-            .getJSONArray(HIS_TIMETABLE).get(1)
+    private fun dataProcessing(data: String): List<TimetableElement> =
+        JSONObject(data).getJSONArray(HIS_TIMETABLE).get(1)
             .let {
                 it as JSONObject
                 it.get(ROW)
@@ -82,17 +80,13 @@ class TimetableCron(
             .map {
                 it as JSONObject
             }
-            .forEach {
-                val result = TimetableElement(
+            .map {
+                TimetableElement(
                     date = dateConverter(it.get(DATE).toString()),
                     period = it.get(PERIOD).toString().toInt(),
                     subject = it.get(NAME).toString()
                 )
-                timetableList.add(result)
             }
-
-        return timetableList
-    }
 
     private fun dateConverter(date: String): LocalDate {
         val formatter = DateTimeFormatter.ofPattern(ScheduleCron.DATE_FORMAT)

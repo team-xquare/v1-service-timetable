@@ -34,8 +34,7 @@ class ScheduleCron(
         return dataProcessing(scheduleValue)
     }
 
-    private fun dataProcessing(data: String): List<ScheduleElement> {
-        val scheduleList: MutableList<ScheduleElement> = mutableListOf()
+    private fun dataProcessing(data: String): List<ScheduleElement> =
         JSONObject(data)
             .getJSONArray(SCHOOL_SCHEDULE).get(1)
             .let {
@@ -48,16 +47,12 @@ class ScheduleCron(
             .map {
                 it as JSONObject
             }
-            .forEach {
-                val scheduleElement = ScheduleElement(
+            .map {
+                ScheduleElement(
                     date = dateConverter(it.get(DATE).toString()),
                     name = it.get(NAME).toString()
                 )
-                scheduleList.add(scheduleElement)
             }
-
-        return scheduleList
-    }
 
     private fun dateConverter(date: String): LocalDate {
         val formatter = DateTimeFormatter.ofPattern(DATE_FORMAT)

@@ -29,13 +29,13 @@ class TimetableScheduler(
 
         for (i in 1..3) {
             for (j in 1..4) {
-                val timetableEntityList: MutableList<TimetableEntity> = mutableListOf()
-                timetableCron.cron(grade = i.toString(), `class` = j.toString())
-                    .forEach { timetable ->
+                val timetableEntityList: List<TimetableEntity> =
+                    timetableCron.cron(grade = i.toString(), `class` = j.toString())
+                    .map { timetable ->
                         val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
                             ?: throw SubjectNotFoundException
 
-                        val timetableEntity = TimetableEntity(
+                        TimetableEntity(
                             period = timetable.period,
                             beginTime = getPeriodTime(START_TIME, timetable.period),
                             endTime = getPeriodTime(END_TIME, timetable.period),
@@ -46,9 +46,7 @@ class TimetableScheduler(
                             type = TableType.DEFAULT,
                             subjectEntity = subjectEntity
                         )
-                        timetableEntityList.add(timetableEntity)
                     }
-
                 timetableRepository.saveAll(timetableEntityList)
             }
         }
