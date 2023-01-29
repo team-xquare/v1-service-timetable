@@ -1,10 +1,11 @@
 package com.xquare.v1servicetimetable.adapter.`in`.cron
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.xquare.v1servicetimetable.adapter.`in`.cron.dto.TimetableElement
 import com.xquare.v1servicetimetable.adapter.`in`.cron.properties.NeisProperties
 import com.xquare.v1servicetimetable.adapter.out.thirdparty.feign.client.NeisClient
-import org.json.JSONArray
-import org.json.JSONObject
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -27,7 +28,7 @@ class TimetableCron(
         const val FRIDAY = "FRIDAY"
     }
 
-    fun cron(grade: String, `class`: String): List<TimetableElement> {
+    fun timetableCron(grade: String, `class`: String): List<TimetableElement> {
         val semester: String = if (LocalDate.now().monthValue < 7) "1" else "2"
 
         val timetableValue: String = neisClient.getTimetable(
@@ -69,27 +70,19 @@ class TimetableCron(
     }
 
     private fun dataProcessing(data: String): List<TimetableElement> =
-        JSONObject(data).getJSONArray(HIS_TIMETABLE).get(1)
-            .let {
-                it as JSONObject
-                it.get(ROW)
-            }
-            .let {
-                it as JSONArray
-            }
-            .map {
-                it as JSONObject
-            }
+        jacksonObjectMapper().readValue<JsonNode>(data)
+            .findValue(HIS_TIMETABLE)
+            .findValue(ROW)
             .map {
                 TimetableElement(
-                    date = dateConverter(it.get(DATE).toString()),
-                    period = it.get(PERIOD).toString().toInt(),
-                    subject = it.get(NAME).toString()
+                    date = dateConverter(it.get(DATE).asText()),
+                    period = it.get(PERIOD).asText().toInt(),
+                    subject = it.get(NAME).asText()
                 )
             }
 
     private fun dateConverter(date: String): LocalDate {
-        val formatter = DateTimeFormatter.ofPattern(ScheduleCron.DATE_FORMAT)
+        val formatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
         return LocalDate.parse(date, formatter)
     }
 
