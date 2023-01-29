@@ -36,9 +36,6 @@ dependencies {
     // Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    // Json
-    implementation("org.json:json:20220924")
-
     implementation(project(":timetable-application"))
 }
 
@@ -48,12 +45,8 @@ tasks.getByName<Jar>("jar") {
 
 allOpen {
     annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
 }
 
 noArg {
     annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
 }
