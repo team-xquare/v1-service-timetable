@@ -48,26 +48,9 @@ class TimetableCron(
         return dataProcessing(timetableValue)
     }
 
-    private fun getMondayOrFridayDate(type: String): LocalDate {
-        // TODO: cron 세부날짜 정하기
-        val date: LocalDate = if (LocalDate.now().monthValue < 7) {
-            LocalDate.of(LocalDate.now().year, 3, 14)
-        } else {
-            LocalDate.of(LocalDate.now().year, 8, 8)
-        }
-
-        val dateNumber: Int = date.dayOfWeek.value
-
-        return if (type == MONDAY) {
-            date.minusDays(dateNumber.toLong() - 1)
-        } else {
-            if (dateNumber <= 5) {
-                date.plusDays(5 - dateNumber.toLong())
-            } else {
-                date.minusDays(7 - dateNumber.toLong())
-            }
-        }
-    }
+    private fun getMondayOrFridayDate(type: String): LocalDate =
+        if (type == MONDAY) LocalDate.now().plusDays(2)
+        else LocalDate.now().plusDays(6)
 
     private fun dataProcessing(data: String): List<TimetableElement> =
         jacksonObjectMapper().readValue<JsonNode>(data)
