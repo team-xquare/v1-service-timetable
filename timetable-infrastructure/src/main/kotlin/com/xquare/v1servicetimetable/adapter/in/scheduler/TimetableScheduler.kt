@@ -36,7 +36,7 @@ class TimetableScheduler(
         for (i in 1..3) {
             for (j in 1..config.classCount) {
                 val timetableEntityList: List<TimetableEntity> =
-                    timetableCron.timetableCron(grade = i.toString(), `class` = j.toString())
+                    timetableCron.timetableCron(grade = i.toString(), classNum = j.toString())
                         .map { timetable ->
                             val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
                                 ?: throw SubjectNotFoundException
