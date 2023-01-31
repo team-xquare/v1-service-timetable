@@ -9,13 +9,11 @@ import java.util.*
 @Aggregate
 class Timetable(
     val id: UUID,
-    val period: Int,
-    val beginTime: LocalTime,
-    val endTime: LocalTime,
     val weekDay: Int,
     val date: LocalDate,
     val grade: Int,
     val classNumber: Int,
     val type: TableType,
-    val subjectId: UUID
+    val subjectId: UUID,
+    val timeId: Int
 )

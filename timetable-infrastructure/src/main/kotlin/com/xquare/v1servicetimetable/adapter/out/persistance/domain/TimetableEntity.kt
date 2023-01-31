@@ -27,18 +27,6 @@ class TimetableEntity(
     val id: UUID = UUID(0, 0),
 
     @field:NotNull
-    @Column(columnDefinition = "TINYINT(1) DEFAULT 0")
-    val period: Int,
-
-    @field:NotNull
-    @Column(columnDefinition = "TIME")
-    val beginTime: LocalTime,
-
-    @field:NotNull
-    @Column(columnDefinition = "TIME")
-    val endTime: LocalTime,
-
-    @field:NotNull
     @Column(columnDefinition = "TINYINT(2)")
     val weekDay: Int,
 
@@ -60,5 +48,9 @@ class TimetableEntity(
 
     @field:NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    val subjectEntity: SubjectEntity
+    val subjectEntity: SubjectEntity,
+
+    @field:NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    val timeEntity: TimeEntity
 )
