@@ -15,7 +15,6 @@ interface NeisClient {
         @RequestParam("ATPT_OFCDC_SC_CODE") regionCode: String,
         @RequestParam("SD_SCHUL_CODE") schoolCode: String,
         @RequestParam("AY") year: String,
-        @RequestParam("SEM") semester: String,
         @RequestParam("GRADE") grade: String,
         @RequestParam("CLASS_NM") classNum: String,
         @RequestParam("TI_FROM_YMD") startDate: String,

@@ -29,8 +29,6 @@ class TimetableCron(
     }
 
     fun timetableCron(grade: String, classNum: String): List<TimetableElement> {
-        val semester: String = if (LocalDate.now().monthValue < 7) "1" else "2"
-
         val timetableValue: String = neisClient.getTimetable(
             key = neisProperties.key,
             type = neisProperties.type,
@@ -38,7 +36,6 @@ class TimetableCron(
             regionCode = neisProperties.region,
             schoolCode = neisProperties.school,
             year = "${LocalDate.now().year}",
-            semester = semester,
             grade = grade,
             classNum = classNum,
             startDate = getMondayOrFridayDate(MONDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT)),
