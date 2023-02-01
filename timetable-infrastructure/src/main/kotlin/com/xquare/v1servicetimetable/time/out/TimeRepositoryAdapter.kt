@@ -18,11 +18,9 @@ class TimeRepositoryAdapter(
 
         val times = defaultTimeEntities.map { defaultTimeEntity ->
             timeMapper.entityToDomain(
-                if (timeEntities != null) {
-                    timeEntities.find { it.period == defaultTimeEntity.period } ?: defaultTimeEntity
-                } else {
-                    defaultTimeEntity
-                }
+                timeEntities?.let { it ->
+                    it.find { it.period == defaultTimeEntity.period }
+                } ?: defaultTimeEntity
             )
         }
         return times
