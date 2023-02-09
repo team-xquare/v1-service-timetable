@@ -53,7 +53,7 @@ class TimetableEntity(
 
     @Enumerated(EnumType.STRING)
     @field:NotNull
-    @Column(columnDefinition = "CHAR(10)")
+    @Column(columnDefinition = "CHAR(13)")
     val periodType: PeriodType = PeriodType.DEFAULT,
 
     @field:NotNull

@@ -7,5 +7,6 @@ enum class PeriodType(
     SELF_STUDY("자습"),
     EXAM("시험"),
     EDUCATION("교육"),
+    ACTIVITY_CLUB("창체동아리"),
     DEFAULT("정규수업")
 }
