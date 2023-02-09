@@ -1,5 +1,6 @@
 package com.xquare.v1servicetimetable.timetable.out
 
+import com.xquare.v1servicetimetable.common.enums.PeriodType
 import com.xquare.v1servicetimetable.common.enums.TableType
 import com.xquare.v1servicetimetable.subject.out.SubjectEntity
 import com.xquare.v1servicetimetable.time.out.TimeEntity
@@ -39,12 +40,21 @@ class TimetableEntity(
 
     @field:NotNull
     @Column(columnDefinition = "TINYINT(1)")
-    val classNumber: Int,
+    val classNum: Int,
 
     @Enumerated(EnumType.STRING)
     @field:NotNull
     @Column(columnDefinition = "CHAR(7)")
-    val type: TableType,
+    val tableType: TableType = TableType.DEFAULT,
+
+    @field:NotNull
+    @Column(columnDefinition = "TINYINT(2)")
+    val period: Int,
+
+    @Enumerated(EnumType.STRING)
+    @field:NotNull
+    @Column(columnDefinition = "CHAR(10)")
+    val periodType: PeriodType = PeriodType.DEFAULT,
 
     @field:NotNull
     @ManyToOne(fetch = FetchType.LAZY)

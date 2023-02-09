@@ -25,8 +25,10 @@ class TimetableMapper(
             weekDay = timetable.weekDay,
             date = timetable.date,
             grade = timetable.grade,
-            classNumber = timetable.classNumber,
-            type = timetable.type,
+            classNum = timetable.classNum,
+            tableType = timetable.tableType,
+            period = timetable.period,
+            periodType = timetable.periodType,
             subjectEntity = subjectEntity,
             timeEntity = timeEntity
         )
@@ -38,8 +40,10 @@ class TimetableMapper(
             weekDay = timetableEntity.weekDay,
             date = timetableEntity.date,
             grade = timetableEntity.grade,
-            classNumber = timetableEntity.classNumber,
-            type = timetableEntity.type,
+            classNum = timetableEntity.classNum,
+            tableType = timetableEntity.tableType,
+            period = timetableEntity.period,
+            periodType = timetableEntity.periodType,
             subjectId = timetableEntity.subjectEntity.id,
             timeId = timetableEntity.timeEntity.id
         )
