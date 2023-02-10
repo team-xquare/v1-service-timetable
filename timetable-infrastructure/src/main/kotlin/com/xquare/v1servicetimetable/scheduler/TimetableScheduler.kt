@@ -46,8 +46,8 @@ class TimetableScheduler(
                                 weekDay = timetable.date.dayOfWeek.value,
                                 date = timetable.date,
                                 grade = i,
-                                classNumber = j,
-                                type = TableType.DEFAULT,
+                                classNum = j,
+                                period = timetable.period,
                                 subjectEntity = subjectEntity,
                                 timeEntity = timeEntity
                             )
