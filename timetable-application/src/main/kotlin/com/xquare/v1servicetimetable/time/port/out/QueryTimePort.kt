@@ -5,5 +5,5 @@ import java.time.LocalDate
 
 interface QueryTimePort {
 
-    fun queryTime(date: LocalDate): List<Time>
+    fun findTimeEntitiesByDate(date: LocalDate): List<Time>
 }
