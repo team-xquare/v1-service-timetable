@@ -12,6 +12,7 @@ data class TimeResponse(
         val id: UUID,
         val period: Int,
         val beginTime: LocalTime,
-        val endTime: LocalTime
+        val endTime: LocalTime,
+        val periodType: String
     )
 }

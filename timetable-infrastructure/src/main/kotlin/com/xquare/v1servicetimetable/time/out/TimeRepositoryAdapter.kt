@@ -12,7 +12,7 @@ class TimeRepositoryAdapter(
     private val timeMapper: TimeMapper
 ) : TimeDrivenPort {
 
-    override fun queryTime(date: LocalDate): List<Time> {
+    override fun findTimeEntitiesByDate(date: LocalDate): List<Time> {
         val defaultTimeEntities = timeRepository.findAllByType(TableType.DEFAULT)
         val timeEntities = timeRepository.findAllByDateAndType(date, TableType.CHANGED)
 

@@ -1,3 +1,5 @@
 package com.xquare.v1servicetimetable.timetable.port.out
 
-interface TimetableDrivenPort : QueryTimetablePort, CommandTimetablePort
+import com.xquare.v1servicetimetable.time.port.out.TimetableQueryTimePort
+
+interface TimetableDrivenPort : QueryTimetablePort, CommandTimetablePort, TimetableQueryTimePort
