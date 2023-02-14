@@ -13,9 +13,11 @@ class JdslConfig(
     private val entityManager: EntityManager
 ) {
 
-    @get:Bean
-    val queryFactory: QueryFactory = QueryFactoryImpl(
-        criteriaQueryCreator = CriteriaQueryCreatorImpl(entityManager),
-        subqueryCreator = SubqueryCreatorImpl()
-    )
+    @Bean
+    fun queryFactory(): QueryFactory {
+        return QueryFactoryImpl(
+            criteriaQueryCreator = CriteriaQueryCreatorImpl(entityManager),
+            subqueryCreator = SubqueryCreatorImpl()
+        )
+    }
 }
