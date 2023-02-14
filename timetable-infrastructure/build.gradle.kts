@@ -36,6 +36,12 @@ dependencies {
     // Jackson
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    // Configuration Processor
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Kotlin JDSL
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:2.0.3.RELEASE")
+
     implementation(project(":timetable-application"))
 }
 
