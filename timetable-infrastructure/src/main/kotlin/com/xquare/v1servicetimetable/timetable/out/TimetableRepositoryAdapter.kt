@@ -15,8 +15,15 @@ import javax.persistence.criteria.JoinType
 
 @Component
 class TimetableRepositoryAdapter(
-    private val queryFactory: QueryFactory
+    private val queryFactory: QueryFactory,
+    private val timetableRepository: TimetableRepository,
+    private val timetableMapper: TimetableMapper
 ) : TimetableDrivenPort {
+
+    override fun findTimetableEntitiesByDate(date: LocalDate): List<Timetable> {
+        return timetableRepository.findAllByDate(date)
+            .map { timetableMapper.entityToDomain(it) }
+    }
 
     override fun findTimetableEntitiesByDateAndGradeAndClassNum(
         start: LocalDate,
