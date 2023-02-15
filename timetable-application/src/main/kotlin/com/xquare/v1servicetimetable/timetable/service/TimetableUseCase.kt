@@ -2,9 +2,11 @@ package com.xquare.v1servicetimetable.timetable.service
 
 import com.xquare.v1servicetimetable.common.annotation.UseCase
 import com.xquare.v1servicetimetable.timetable.port.`in`.TimetableDrivingPort
+import com.xquare.v1servicetimetable.timetable.port.`in`.dto.response.DayTimeElement
 import com.xquare.v1servicetimetable.timetable.port.`in`.dto.response.WeekTimeElement
 import com.xquare.v1servicetimetable.timetable.port.`in`.dto.response.WeekTimetableResponse
 import com.xquare.v1servicetimetable.timetable.port.out.QueryTimetablePort
+import com.xquare.v1servicetimetable.timetable.port.out.vo.DayTimeElementVO
 import com.xquare.v1servicetimetable.user.port.UserPort
 import java.time.LocalDate
 import java.time.temporal.WeekFields
@@ -23,13 +25,24 @@ class TimetableUseCase(
 
         val weekTimeElement: List<WeekTimeElement> = queryTimetablePort
             .findTimetableEntitiesByDateAndGradeAndClassNum(start, end, user.grade, user.classNum)
-            .map {
+            .map { it ->
                 WeekTimeElement(
                     weekDay = it.key.dayOfWeek.value,
-                    dayTimetable = it.value
+                    dayTimetable = it.value.map { it.toDayTimeElement() }
                 )
             }
 
         return WeekTimetableResponse(weekTimeElement)
+    }
+
+    private fun DayTimeElementVO.toDayTimeElement(): DayTimeElement {
+        return DayTimeElement(
+            period = this.period,
+            beginTime = this.beginTime,
+            endTime = this.endTime,
+            subjectName = this.subjectName,
+            subjectImage = this.subjectImage,
+            date = this.date
+        )
     }
 }

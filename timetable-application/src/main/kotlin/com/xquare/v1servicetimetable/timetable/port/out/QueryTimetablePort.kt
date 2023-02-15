@@ -1,6 +1,6 @@
 package com.xquare.v1servicetimetable.timetable.port.out
 
-import com.xquare.v1servicetimetable.timetable.port.`in`.dto.response.DayTimeElement
+import com.xquare.v1servicetimetable.timetable.port.out.vo.DayTimeElementVO
 import java.time.LocalDate
 
 interface QueryTimetablePort {
@@ -10,5 +10,5 @@ interface QueryTimetablePort {
         end: LocalDate,
         grade: Int,
         classNum: Int
-    ): Map<LocalDate, List<DayTimeElement>>
+    ): Map<LocalDate, List<DayTimeElementVO>>
 }

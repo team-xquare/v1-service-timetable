@@ -7,8 +7,8 @@ import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.xquare.v1servicetimetable.subject.out.SubjectEntity
 import com.xquare.v1servicetimetable.time.out.TimeEntity
 import com.xquare.v1servicetimetable.timetable.domain.Timetable
-import com.xquare.v1servicetimetable.timetable.port.`in`.dto.response.DayTimeElement
 import com.xquare.v1servicetimetable.timetable.port.out.TimetableDrivenPort
+import com.xquare.v1servicetimetable.timetable.port.out.vo.DayTimeElementVO
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import javax.persistence.criteria.JoinType
@@ -30,10 +30,10 @@ class TimetableRepositoryAdapter(
         end: LocalDate,
         grade: Int,
         classNum: Int
-    ): Map<LocalDate, List<DayTimeElement>> {
+    ): Map<LocalDate, List<DayTimeElementVO>> {
         return queryFactory.findAllByDateBetweenAndGradeAndClassNum(start, end, grade, classNum)
             .map {
-                DayTimeElement(
+                DayTimeElementVO(
                     period = it.period,
                     beginTime = it.beginTime,
                     endTime = it.endTime,
@@ -49,7 +49,7 @@ class TimetableRepositoryAdapter(
         end: LocalDate,
         grade: Int,
         classNum: Int
-    ): List<DayTimeElement> {
+    ): List<DayTimeElementVO> {
         return this.listQuery {
             select(
                 listOf(
@@ -69,8 +69,7 @@ class TimetableRepositoryAdapter(
                     .and(col(TimetableEntity::grade).equal(grade))
                     .and(col(TimetableEntity::classNum).equal(classNum))
             )
-            orderBy(col(TimetableEntity::weekDay).asc())
-            orderBy(col(TimetableEntity::period).asc())
+            orderBy(listOf(col(TimetableEntity::weekDay).asc(), col(TimetableEntity::period).asc()))
         }
     }
 }
