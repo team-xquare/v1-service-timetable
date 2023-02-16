@@ -9,6 +9,11 @@ subprojects {
         version = "1.6.21"
     }
 
+    apply {
+        plugin("org.jetbrains.kotlin.kapt")
+        version = "1.6.21"
+    }
+
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
