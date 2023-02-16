@@ -24,7 +24,7 @@ class TimetableUseCase(
         val end = LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6)
 
         val weekTimeElement: List<WeekTimeElement> = queryTimetablePort
-            .findTimetableEntitiesByDateAndGradeAndClassNum(start, end, user.grade, user.classNum)
+            .findTimetableEntitiesByDateBetweenAndGradeAndClassNum(start, end, user.grade, user.classNum)
             .map { it ->
                 WeekTimeElement(
                     weekDay = it.key.dayOfWeek.value,

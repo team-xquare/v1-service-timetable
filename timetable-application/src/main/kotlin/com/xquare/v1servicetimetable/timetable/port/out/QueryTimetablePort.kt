@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 interface QueryTimetablePort {
 
-    fun findTimetableEntitiesByDateAndGradeAndClassNum(
+    fun findTimetableEntitiesByDateBetweenAndGradeAndClassNum(
         start: LocalDate,
         end: LocalDate,
         grade: Int,

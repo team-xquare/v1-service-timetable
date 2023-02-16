@@ -25,7 +25,7 @@ class TimetableRepositoryAdapter(
             .map { timetableMapper.entityToDomain(it) }
     }
 
-    override fun findTimetableEntitiesByDateAndGradeAndClassNum(
+    override fun findTimetableEntitiesByDateBetweenAndGradeAndClassNum(
         start: LocalDate,
         end: LocalDate,
         grade: Int,
