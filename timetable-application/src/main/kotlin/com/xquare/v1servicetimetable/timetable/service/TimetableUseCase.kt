@@ -28,6 +28,7 @@ class TimetableUseCase(
             .map { it ->
                 WeekTimeElement(
                     weekDay = it.key.dayOfWeek.value,
+                    date = it.key,
                     dayTimetable = it.value.map { it.toDayTimeElement() }
                 )
             }
@@ -41,8 +42,7 @@ class TimetableUseCase(
             beginTime = this.beginTime,
             endTime = this.endTime,
             subjectName = this.subjectName,
-            subjectImage = this.subjectImage,
-            date = this.date
+            subjectImage = this.subjectImage
         )
     }
 }
