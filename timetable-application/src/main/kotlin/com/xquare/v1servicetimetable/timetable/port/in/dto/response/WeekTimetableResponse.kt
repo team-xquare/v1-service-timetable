@@ -9,6 +9,7 @@ data class WeekTimetableResponse(
 
 data class WeekTimeElement(
     val weekDay: Int,
+    val date: LocalDate,
     val dayTimetable: List<DayTimeElement>
 )
 
@@ -17,6 +18,5 @@ data class DayTimeElement(
     val beginTime: LocalTime,
     val endTime: LocalTime,
     val subjectName: String,
-    val subjectImage: String,
-    val date: LocalDate
+    val subjectImage: String
 )
