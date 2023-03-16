@@ -23,6 +23,6 @@ class SubjectEntity(
     val name: String,
 
     @field:NotNull
-    @Column(columnDefinition = "CHAR(1)")
+    @Column(columnDefinition = "VARCHAR(1000)")
     val profile: String
 )
