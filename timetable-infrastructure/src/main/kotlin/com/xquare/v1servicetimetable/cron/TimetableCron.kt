@@ -7,6 +7,7 @@ import com.xquare.v1servicetimetable.cron.dto.TimetableElement
 import com.xquare.v1servicetimetable.cron.properties.NeisProperties
 import com.xquare.v1servicetimetable.common.feign.client.NeisClient
 import org.springframework.stereotype.Component
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -38,16 +39,12 @@ class TimetableCron(
             year = "${LocalDate.now().year}",
             grade = grade,
             classNum = classNum,
-            startDate = getMondayOrFridayDate(MONDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT)),
-            endDate = getMondayOrFridayDate(FRIDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT))
+            startDate = LocalDate.now().with(DayOfWeek.MONDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT)),
+            endDate = LocalDate.now().with(DayOfWeek.FRIDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT))
         )
 
         return dataProcessing(timetableValue)
     }
-
-    private fun getMondayOrFridayDate(type: String): LocalDate =
-        if (type == MONDAY) LocalDate.now().plusDays(2)
-        else LocalDate.now().plusDays(6)
 
     private fun dataProcessing(data: String): List<TimetableElement> =
         jacksonObjectMapper().readValue<JsonNode>(data)
