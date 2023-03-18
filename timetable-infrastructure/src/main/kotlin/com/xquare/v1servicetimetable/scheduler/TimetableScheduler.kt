@@ -4,6 +4,7 @@ import com.xquare.v1servicetimetable.common.enums.TableType
 import com.xquare.v1servicetimetable.config.exception.ConfigNotFoundException
 import com.xquare.v1servicetimetable.config.out.ConfigRepository
 import com.xquare.v1servicetimetable.cron.TimetableCron
+import com.xquare.v1servicetimetable.subject.exception.SubjectNotFoundException
 import com.xquare.v1servicetimetable.subject.out.SubjectEntity
 import com.xquare.v1servicetimetable.subject.out.SubjectRepository
 import com.xquare.v1servicetimetable.time.exception.TimeNotFoundException
@@ -38,7 +39,7 @@ class TimetableScheduler(
                     timetableCron.timetableCron(grade = i.toString(), classNum = j.toString())
                         .map { timetable ->
                             val subjectEntity: SubjectEntity = subjectEntityList.find { it.name == timetable.subject }
-                                ?: subjectRepository.save(SubjectEntity(name = timetable.subject, profile = ""))
+                                ?: throw SubjectNotFoundException
 
                             val timeEntity = timeEntityList.find { it.period == timetable.period }
                                 ?: throw TimeNotFoundException
