@@ -10,7 +10,7 @@ import com.xquare.v1servicetimetable.timetable.port.out.vo.DayTimeElementVO
 import com.xquare.v1servicetimetable.user.port.UserPort
 import java.time.LocalDate
 import java.time.temporal.WeekFields
-import java.util.*
+import java.util.Locale
 
 @UseCase
 class TimetableUseCase(
@@ -24,7 +24,12 @@ class TimetableUseCase(
         val end = LocalDate.now().with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6)
 
         val weekTimeElement: List<WeekTimeElement> = queryTimetablePort
-            .findTimetableEntitiesByDateBetweenAndGradeAndClassNum(start, end, user.grade, user.classNum)
+            .findTimetableEntitiesByDateBetweenAndGradeAndClassNum(
+                start = start,
+                end = end,
+                grade = user.grade,
+                classNum = user.classNum,
+            )
             .map { it ->
                 WeekTimeElement(
                     weekDay = it.key.dayOfWeek.value,

@@ -19,3 +19,4 @@ class ConfigEntity(
     @Column(columnDefinition = "TINYINT(1)")
     val classCount: Int
 )
+
