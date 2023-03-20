@@ -1,11 +1,11 @@
 package com.xquare.v1servicetimetable.subject.out
 
-import com.xquare.v1servicetimetable.subject.out.SubjectEntity
 import com.xquare.v1servicetimetable.subject.domain.Subject
 import org.springframework.stereotype.Component
 
 @Component
 class SubjectMapper {
+
     fun domainToEntity(subject: Subject): SubjectEntity {
         return SubjectEntity(
             id = subject.id,
