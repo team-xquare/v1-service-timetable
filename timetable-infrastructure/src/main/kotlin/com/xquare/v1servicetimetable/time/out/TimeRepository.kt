@@ -6,7 +6,6 @@ import java.time.LocalDate
 import java.util.*
 
 sealed interface TimeRepository : CrudRepository<TimeEntity, UUID> {
-    fun findAllByType(type: TableType): List<TimeEntity>
 
-    fun findAllByDateAndType(date: LocalDate, type: TableType): List<TimeEntity>?
+    fun findAllByType(type: TableType): List<TimeEntity>
 }
