@@ -26,7 +26,7 @@ class TimetableScheduler(
 ) {
 
     @Transactional
-    @Scheduled(cron = "0 0 23 * * 6", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 30 20 * * FRI", zone = "Asia/Seoul")
     fun timetableScheduler() {
         val config = configRepository.findByIdOrNull(1) ?: throw ConfigNotFoundException
         timetableRepository.deleteAll()
