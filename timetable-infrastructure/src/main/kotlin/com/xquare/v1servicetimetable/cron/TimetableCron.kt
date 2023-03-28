@@ -11,6 +11,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 @Component
@@ -25,11 +26,10 @@ class TimetableCron(
         const val NAME = "ITRT_CNTNT"
         const val DATE = "ALL_TI_YMD"
         const val PERIOD = "PERIO"
-        const val MONDAY = "MONDAY"
-        const val FRIDAY = "FRIDAY"
     }
 
     fun timetableCron(grade: String, classNum: String): List<TimetableElement> {
+        val now = LocalDate.now()
         val timetableValue: String = neisClient.getTimetable(
             key = neisProperties.key,
             type = neisProperties.type,
@@ -39,8 +39,8 @@ class TimetableCron(
             year = "${LocalDate.now().year}",
             grade = grade,
             classNum = classNum,
-            startDate = LocalDate.now().with(DayOfWeek.MONDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT)),
-            endDate = LocalDate.now().with(DayOfWeek.FRIDAY).format(DateTimeFormatter.ofPattern(DATE_FORMAT))
+            startDate = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).format(DateTimeFormatter.ofPattern(DATE_FORMAT)),
+            endDate = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).format(DateTimeFormatter.ofPattern(DATE_FORMAT))
         )
 
         return dataProcessing(timetableValue)
@@ -54,16 +54,10 @@ class TimetableCron(
                 TimetableElement(
                     date = dateConverter(it.get(DATE).asText()),
                     period = it.get(PERIOD).asText().toInt(),
-                    subject = it.get(NAME).asText()
+                    subject = it.get(NAME).asText(),
                 )
             }
 
-    private fun dateConverter(date: String): LocalDate {
-        val formatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
-        return LocalDate.parse(date, formatter)
-    }
-
-    private fun getDayOfWeek(date: LocalDate): String {
-        return date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREA)
-    }
+    private fun dateConverter(date: String): LocalDate =
+        LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT))
 }
