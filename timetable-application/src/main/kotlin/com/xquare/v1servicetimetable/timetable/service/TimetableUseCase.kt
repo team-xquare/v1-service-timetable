@@ -24,32 +24,39 @@ class TimetableUseCase(
     override fun getWeekTimetable(): WeekTimetableResponse {
         val user = userPort.getUser(userPort.getCurrentUserId())
 
-        val nowTime = LocalTime.now()
+        val (start, end) = checkAfterFridayTwentyThirty()
+
+        val weekTimeElement: List<WeekTimeElement> = queryTimetablePort
+            .findTimetableEntitiesByDateBetweenAndGradeAndClassNum(start, end, user.grade, user.classNum)
+            .map { (date, dayTimetable) ->
+                WeekTimeElement(
+                    weekDay = date.dayOfWeek.value,
+                    date = date,
+                    dayTimetable = dayTimetable.map { it.toDayTimeElement() }
+                )
+            }
+
+        return WeekTimetableResponse(weekTimeElement)
+    }
+
+    private fun checkAfterFridayTwentyThirty(
+    ): Pair<LocalDate, LocalDate> {
         val now = LocalDate.now()
+        val nowTime = LocalTime.now()
 
         var start = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 2)
         var end = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6)
 
-        val isAfterThursday = now.isAfter(now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 5))
-        val isAfterFriday = now.isAfter(now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6))
-        val isAfterEndTime = nowTime.isAfter(LocalTime.of(20, 30))
+        val isAfterThursday = now.dayOfWeek > DayOfWeek.THURSDAY
+        val isAfterFriday = now.dayOfWeek > DayOfWeek.FRIDAY
+        val isAfterEndTime = nowTime > LocalTime.of(20, 30)
 
         if (isAfterThursday && isAfterEndTime || isAfterFriday) {
             start = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
             end = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
         }
 
-        val weekTimeElement: List<WeekTimeElement> = queryTimetablePort
-            .findTimetableEntitiesByDateBetweenAndGradeAndClassNum(start, end, user.grade, user.classNum)
-            .map { it ->
-                WeekTimeElement(
-                    weekDay = it.key.dayOfWeek.value,
-                    date = it.key,
-                    dayTimetable = it.value.map { it.toDayTimeElement() }
-                )
-            }
-
-        return WeekTimetableResponse(weekTimeElement)
+        return Pair(start, end)
     }
 
     private fun DayTimeElementVO.toDayTimeElement(): DayTimeElement {
