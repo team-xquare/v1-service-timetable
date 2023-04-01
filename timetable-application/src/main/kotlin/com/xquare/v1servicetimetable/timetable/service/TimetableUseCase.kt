@@ -24,7 +24,7 @@ class TimetableUseCase(
     override fun getWeekTimetable(): WeekTimetableResponse {
         val user = userPort.getUser(userPort.getCurrentUserId())
 
-        val (start, end) = checkAfterFridayTwentyThirty()
+        val (start, end) = checkAfterFriday20hour30minutes()
 
         val weekTimeElement: List<WeekTimeElement> = queryTimetablePort
             .findTimetableEntitiesByDateBetweenAndGradeAndClassNum(start, end, user.grade, user.classNum)
@@ -39,7 +39,7 @@ class TimetableUseCase(
         return WeekTimetableResponse(weekTimeElement)
     }
 
-    private fun checkAfterFridayTwentyThirty(
+    private fun checkAfterFriday20hour30minutes(
     ): Pair<LocalDate, LocalDate> {
         val now = LocalDate.now()
         val nowTime = LocalTime.now()
