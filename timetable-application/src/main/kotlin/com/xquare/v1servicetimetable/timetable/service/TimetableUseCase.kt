@@ -46,7 +46,6 @@ class TimetableUseCase(
 
         var start = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 2)
         var end = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6)
-
         val isAfterThursday = now.dayOfWeek > DayOfWeek.THURSDAY
         val isAfterFriday = now.dayOfWeek > DayOfWeek.FRIDAY
         val isAfterEndTime = nowTime > LocalTime.of(20, 30)
