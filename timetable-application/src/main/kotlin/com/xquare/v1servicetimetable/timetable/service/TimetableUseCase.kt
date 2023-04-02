@@ -45,11 +45,11 @@ class TimetableUseCase(
 
         var start = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 2)
         var end = now.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 6)
-        val isAfterThursday = now.dayOfWeek > DayOfWeek.THURSDAY
-        val isAfterFriday = now.dayOfWeek > DayOfWeek.FRIDAY
+        val isFriday = now.dayOfWeek == DayOfWeek.FRIDAY
+        val isSaturday = now.dayOfWeek == DayOfWeek.SATURDAY
         val isAfterEndTime = LocalTime.now() > LocalTime.of(20, 30)
 
-        if (isAfterThursday && isAfterEndTime || isAfterFriday) {
+        if (isFriday && isAfterEndTime || isSaturday) {
             start = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
             end = now.with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
         }
