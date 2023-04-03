@@ -4,7 +4,7 @@ import com.xquare.v1servicetimetable.common.enums.TableType
 import org.hibernate.annotations.GenericGenerator
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.*
+import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType

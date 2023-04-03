@@ -7,6 +7,7 @@ import com.xquare.v1servicetimetable.time.exception.TimeNotFoundException
 import com.xquare.v1servicetimetable.subject.out.SubjectRepository
 import com.xquare.v1servicetimetable.time.out.TimeRepository
 import com.xquare.v1servicetimetable.timetable.domain.Timetable
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
@@ -15,10 +16,10 @@ class TimetableMapper(
     private val timeRepository: TimeRepository
 ) {
     fun domainToEntity(timetable: Timetable): TimetableEntity {
-        val subjectEntity: SubjectEntity = subjectRepository.findById(timetable.subjectId)
-            .orElseThrow { throw SubjectNotFoundException }
-        val timeEntity: TimeEntity = timeRepository.findById(timetable.timeId)
-            .orElseThrow { throw TimeNotFoundException }
+        val subjectEntity: SubjectEntity = subjectRepository.findByIdOrNull(timetable.subjectId)
+            ?: throw SubjectNotFoundException
+        val timeEntity: TimeEntity = timeRepository.findByIdOrNull(timetable.timeId)
+            ?: throw TimeNotFoundException
 
         return TimetableEntity(
             id = timetable.id,
