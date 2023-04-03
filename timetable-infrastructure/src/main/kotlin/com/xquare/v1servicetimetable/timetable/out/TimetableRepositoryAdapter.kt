@@ -16,33 +16,34 @@ import javax.persistence.criteria.JoinType
 @Component
 class TimetableRepositoryAdapter(
     private val queryFactory: QueryFactory,
-    private val timetableRepository: TimetableRepository,
     private val timetableMapper: TimetableMapper
 ) : TimetableDrivenPort {
 
-    override fun findTimetableEntitiesByDate(date: LocalDate): List<Timetable> {
-        return timetableRepository.findAllByDate(date)
-            .map { timetableMapper.entityToDomain(it) }
-    }
+    override fun findTimetableEntitiesByDate(date: LocalDate): List<Timetable> =
+        queryFactory.findAllByDate(date)
+            .map(timetableMapper::entityToDomain)
 
     override fun findTimetableEntitiesByDateBetweenAndGradeAndClassNum(
         start: LocalDate,
         end: LocalDate,
         grade: Int,
-        classNum: Int
-    ): Map<LocalDate, List<DayTimeElementVO>> {
-        return queryFactory.findAllByDateBetweenAndGradeAndClassNum(start, end, grade, classNum)
-            .map {
-                DayTimeElementVO(
-                    period = it.period,
-                    beginTime = it.beginTime,
-                    endTime = it.endTime,
-                    subjectName = it.subjectName,
-                    subjectImage = it.subjectImage,
-                    date = it.date
-                )
-            }.groupBy { it.date }
-    }
+        classNum: Int,
+    ): Map<LocalDate, List<DayTimeElementVO>> =
+        queryFactory.findAllByDateBetweenAndGradeAndClassNum(
+            start = start,
+            end = end,
+            grade = grade,
+            classNum = classNum,
+        ).map {
+            DayTimeElementVO(
+                period = it.period,
+                beginTime = it.beginTime,
+                endTime = it.endTime,
+                subjectName = it.subjectName,
+                subjectImage = it.subjectImage,
+                date = it.date,
+            )
+        }.groupBy { it.date }
 
     private fun QueryFactory.findAllByDateBetweenAndGradeAndClassNum(
         start: LocalDate,
@@ -70,6 +71,29 @@ class TimetableRepositoryAdapter(
                     .and(col(TimetableEntity::classNum).equal(classNum))
             )
             orderBy(listOf(col(TimetableEntity::weekDay).asc(), col(TimetableEntity::period).asc()))
+        }
+    }
+
+    private fun QueryFactory.findAllByDate(date: LocalDate): List<TimetableEntity> {
+        return this.listQuery {
+            select(
+                listOf(
+                    col(TimetableEntity::id),
+                    col(TimetableEntity::weekDay),
+                    col(TimetableEntity::date),
+                    col(TimetableEntity::grade),
+                    col(TimetableEntity::classNum),
+                    col(TimetableEntity::tableType),
+                    col(TimetableEntity::period),
+                    col(TimetableEntity::periodType),
+                    col(TimetableEntity::subjectEntity),
+                    col(TimetableEntity::timeEntity)
+                )
+            )
+            from(entity(TimetableEntity::class))
+            where(
+                col(TimetableEntity::date).equal(date)
+            )
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.xquare.v1servicetimetable.subject.out
 
 import org.hibernate.annotations.GenericGenerator
-import java.util.*
+import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

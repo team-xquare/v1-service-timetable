@@ -5,7 +5,7 @@ import com.xquare.v1servicetimetable.user.User
 import com.xquare.v1servicetimetable.user.port.UserDrivenPort
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.UUID
 
 @Component
 class UserFeignAdapter(
