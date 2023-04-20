@@ -26,3 +26,4 @@ class SubjectEntity(
     @Column(columnDefinition = "VARCHAR(1000)")
     val profile: String
 )
+
