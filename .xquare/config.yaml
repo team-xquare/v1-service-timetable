@@ -1,0 +1,4 @@
+config:
+  name: timetable
+  prefix: /timetables
+  service_type: be
