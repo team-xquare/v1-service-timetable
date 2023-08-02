@@ -2,3 +2,4 @@ config:
   name: timetable
   prefix: /timetables
   service_type: be
+  port: 8080
