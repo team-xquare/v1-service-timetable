@@ -32,8 +32,10 @@ class ErrorHandlingFilter(
     }
 
     private fun errorResponse(errorCode: ErrorCode, response: HttpServletResponse) {
-        response.status = errorCode.statusCode
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.writer.write(objectMapper.writeValueAsString(ErrorResponse(errorCode)))
+        response.apply {
+            status = errorCode.statusCode
+            contentType = MediaType.APPLICATION_JSON_VALUE
+            writer.write(objectMapper.writeValueAsString(ErrorResponse(errorCode)))
+        }
     }
 }
