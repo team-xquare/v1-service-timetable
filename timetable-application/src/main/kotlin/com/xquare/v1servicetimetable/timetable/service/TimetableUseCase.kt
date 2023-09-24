@@ -41,13 +41,11 @@ class TimetableUseCase(
         return WeekTimetableResponse(weekTimeElement)
     }
 
-    private fun DayTimeElementVO.toDayTimeElement(): DayTimeElement {
-        return DayTimeElement(
-            period = this.period,
-            beginTime = this.beginTime,
-            endTime = this.endTime,
-            subjectName = this.subjectName,
-            subjectImage = this.subjectImage
-        )
-    }
+    private fun DayTimeElementVO.toDayTimeElement() = DayTimeElement(
+        period = this.period,
+        beginTime = this.beginTime,
+        endTime = this.endTime,
+        subjectName = this.subjectName,
+        subjectImage = this.subjectImage,
+    )
 }
