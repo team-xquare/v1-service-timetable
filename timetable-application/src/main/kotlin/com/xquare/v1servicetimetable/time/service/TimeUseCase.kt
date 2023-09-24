@@ -27,13 +27,11 @@ class TimeUseCase(
         return TimeResponse(date, times)
     }
 
-    private fun Time.toTimeElement(periodType: String): TimeElement {
-        return TimeElement(
-            id = this.id,
-            period = this.period,
-            beginTime = this.beginTime,
-            endTime = this.endTime,
-            periodType = periodType
-        )
-    }
+    private fun Time.toTimeElement(periodType: String) = TimeElement(
+        id = this.id,
+        period = this.period,
+        beginTime = this.beginTime,
+        endTime = this.endTime,
+        periodType = periodType,
+    )
 }

@@ -11,6 +11,6 @@ import java.util.UUID
 @FeignClient(name = "UserClient", url = "\${service.scheme}://\${service.user.host}")
 interface UserClient {
 
-    @GetMapping("users/id/{userId}")
+    @GetMapping("/users/id/{userId}")
     fun getUser(@PathVariable userId: UUID): UserResponse
 }

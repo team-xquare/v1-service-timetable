@@ -34,24 +34,15 @@ class TimetableRepositoryAdapter(
             end = end,
             grade = grade,
             classNum = classNum,
-        ).map {
-            DayTimeElementVO(
-                period = it.period,
-                beginTime = it.beginTime,
-                endTime = it.endTime,
-                subjectName = it.subjectName,
-                subjectImage = it.subjectImage,
-                date = it.date,
-            )
-        }.groupBy { it.date }
+        ).groupBy { it.date }
 
     private fun QueryFactory.findAllByDateBetweenAndGradeAndClassNum(
         start: LocalDate,
         end: LocalDate,
         grade: Int,
         classNum: Int
-    ): List<DayTimeElementVO> {
-        return this.listQuery {
+    ): List<DayTimeElementVO> =
+        this.listQuery {
             select(
                 listOf(
                     col(TimetableEntity::period),
@@ -59,7 +50,7 @@ class TimetableRepositoryAdapter(
                     col(TimeEntity::endTime),
                     col(SubjectEntity::name),
                     col(SubjectEntity::profile),
-                    col(TimetableEntity::date)
+                    col(TimetableEntity::date),
                 )
             )
             from(entity(TimetableEntity::class))
@@ -72,10 +63,9 @@ class TimetableRepositoryAdapter(
             )
             orderBy(listOf(col(TimetableEntity::weekDay).asc(), col(TimetableEntity::period).asc()))
         }
-    }
 
-    private fun QueryFactory.findAllByDate(date: LocalDate): List<TimetableEntity> {
-        return this.listQuery {
+    private fun QueryFactory.findAllByDate(date: LocalDate): List<TimetableEntity> =
+        this.listQuery {
             select(
                 listOf(
                     col(TimetableEntity::id),
@@ -87,7 +77,7 @@ class TimetableRepositoryAdapter(
                     col(TimetableEntity::period),
                     col(TimetableEntity::periodType),
                     col(TimetableEntity::subjectEntity),
-                    col(TimetableEntity::timeEntity)
+                    col(TimetableEntity::timeEntity),
                 )
             )
             from(entity(TimetableEntity::class))
@@ -95,5 +85,4 @@ class TimetableRepositoryAdapter(
                 col(TimetableEntity::date).equal(date)
             )
         }
-    }
 }

@@ -9,7 +9,7 @@ spring:
   profiles:
     active: ${PROFILE}
   config:
-    import: ${CLOUD_CONFIG_IMPORT_URL:optional:configserver:https://api.xquare.app/cloud-config/}
+    import: optional:configserver:https://prod-server.xquare.app/cloud-config/
   cloud:
     config:
       username: ${CLOUD_CONFIG_USERNAME}
@@ -33,3 +33,6 @@ spring:
 
   lifecycle:
     timeout-per-shutdown-phase: 20s
+
+subject:
+    image: ${subject.image}
