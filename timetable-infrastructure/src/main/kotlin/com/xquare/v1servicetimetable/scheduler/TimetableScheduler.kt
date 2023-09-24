@@ -38,7 +38,7 @@ class TimetableScheduler(
                     classNum = classNum.toString(),
                 ).map { timetable ->
                     val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
-                        ?: getOrCreateSubjectEntity(timetable.subject)
+                        ?: createNewSubjectEntity(timetable.subject, subjectEntityList)
 
                     val timeEntity = timeEntityList.find { it.period == timetable.period }
                         ?: throw TimeNotFoundException
@@ -58,12 +58,12 @@ class TimetableScheduler(
         }
     }
 
-    private fun getOrCreateSubjectEntity(subjectName: String): SubjectEntity {
-        return subjectRepository.findByName(subjectName) ?: subjectRepository.save(
-            SubjectEntity(
-                name = subjectName,
-                profile = defaultSubjectImage,
-            )
-        )
+    private fun createNewSubjectEntity(
+        subjectName: String,
+        subjectEntityList: MutableList<SubjectEntity>,
+    ): SubjectEntity {
+        val newSubjectEntity = SubjectEntity(name = subjectName, profile = defaultSubjectImage)
+        subjectEntityList.add(newSubjectEntity)
+        return subjectRepository.save(newSubjectEntity)
     }
 }
