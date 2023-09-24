@@ -1,7 +1,6 @@
 package com.xquare.v1servicetimetable.scheduler
 
 import com.xquare.v1servicetimetable.common.enums.TableType
-import com.xquare.v1servicetimetable.config.out.ConfigRepository
 import com.xquare.v1servicetimetable.cron.TimetableCron
 import com.xquare.v1servicetimetable.subject.out.SubjectEntity
 import com.xquare.v1servicetimetable.subject.out.SubjectRepository
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class TimetableScheduler(
-    private val configRepository: ConfigRepository,
     private val timetableCron: TimetableCron,
     private val subjectRepository: SubjectRepository,
     private val timetableRepository: TimetableRepository,
@@ -35,25 +33,24 @@ class TimetableScheduler(
 
         for (i in 1..3) {
             for (j in 1..4) {
-                val timetableEntityList: List<TimetableEntity> =
-                    timetableCron.timetableCron(grade = i.toString(), classNum = j.toString())
-                        .map { timetable ->
-                            val subjectEntity: SubjectEntity = subjectEntityList.find { it.name == timetable.subject }
-                                ?: getOrCreateSubjectEntity(timetable.subject)
+                val timetableEntityList = timetableCron.timetableCron(grade = i.toString(), classNum = j.toString())
+                    .map { timetable ->
+                        val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
+                            ?: getOrCreateSubjectEntity(timetable.subject)
 
-                            val timeEntity = timeEntityList.find { it.period == timetable.period }
-                                ?: throw TimeNotFoundException
+                        val timeEntity = timeEntityList.find { it.period == timetable.period }
+                            ?: throw TimeNotFoundException
 
-                            TimetableEntity(
-                                weekDay = timetable.date.dayOfWeek.value,
-                                date = timetable.date,
-                                grade = i,
-                                classNum = j,
-                                period = timetable.period,
-                                subjectEntity = subjectEntity,
-                                timeEntity = timeEntity,
-                            )
-                        }
+                        TimetableEntity(
+                            weekDay = timetable.date.dayOfWeek.value,
+                            date = timetable.date,
+                            grade = i,
+                            classNum = j,
+                            period = timetable.period,
+                            subjectEntity = subjectEntity,
+                            timeEntity = timeEntity,
+                        )
+                    }
                 timetableRepository.saveAll(timetableEntityList)
             }
         }
