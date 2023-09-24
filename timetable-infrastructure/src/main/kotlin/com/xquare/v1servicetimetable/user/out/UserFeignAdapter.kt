@@ -12,8 +12,8 @@ class UserFeignAdapter(
     private val userClient: UserClient
 ) : UserDrivenPort {
 
-    override fun getUser(userId: UUID): User {
-        return userClient.getUser(userId)
+    override fun getUser(userId: UUID): User =
+        userClient.getUser(userId)
             .let {
                 User(
                     id = it.id,
@@ -27,9 +27,7 @@ class UserFeignAdapter(
                     profileFileName = it.profileFileName
                 )
             }
-    }
 
-    override fun getCurrentUserId(): UUID {
-        return UUID.fromString(SecurityContextHolder.getContext().authentication.name)
-    }
+    override fun getCurrentUserId(): UUID =
+        UUID.fromString(SecurityContextHolder.getContext().authentication.name)
 }
