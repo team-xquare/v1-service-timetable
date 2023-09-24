@@ -23,24 +23,33 @@ class TimetableScheduler(
     private val defaultSubjectImage: String,
 ) {
 
+    companion object {
+        const val GRADE_COUNT = 3
+        const val CLASS_NUM_COUNT = 4
+    }
+
     @Transactional
     @Scheduled(cron = "0 59 23 * * SAT", zone = "Asia/Seoul")
     fun timetableScheduler() {
         timetableRepository.deleteAll()
 
-        val subjectEntityList = subjectRepository.findAll()
-        val timeEntityList = timeRepository.findAllByType(TableType.DEFAULT)
+        val subjectEntityMap = subjectRepository.findAll()
+            .associateBy { it.name }
+            .toMutableMap()
 
-        for (grade in 1..3) {
-            for (classNum in 1..4) {
+        val timeEntityMap = timeRepository.findAllByType(TableType.DEFAULT)
+            .associateBy { it.period }
+
+        for (grade in 1..GRADE_COUNT) {
+            for (classNum in 1..CLASS_NUM_COUNT) {
                 val timetableEntityList = timetableCron.timetableCron(
                     grade = grade.toString(),
                     classNum = classNum.toString(),
                 ).map { timetable ->
-                    val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
-                        ?: createNewSubjectEntity(timetable.subject, subjectEntityList)
+                    val subjectEntity = subjectEntityMap[timetable.subject]
+                        ?: createNewSubjectEntity(timetable.subject, subjectEntityMap)
 
-                    val timeEntity = timeEntityList.find { it.period == timetable.period }
+                    val timeEntity = timeEntityMap[timetable.period]
                         ?: throw TimeNotFoundException
 
                     TimetableEntity(
@@ -60,10 +69,12 @@ class TimetableScheduler(
 
     private fun createNewSubjectEntity(
         subjectName: String,
-        subjectEntityList: MutableList<SubjectEntity>,
+        subjectEntityMap: MutableMap<String, SubjectEntity>,
     ): SubjectEntity {
-        val newSubjectEntity = SubjectEntity(name = subjectName, profile = defaultSubjectImage)
-        subjectEntityList.add(newSubjectEntity)
+        val newSubjectEntity = SubjectEntity(
+            name = subjectName,
+            profile = defaultSubjectImage,
+        ).also { subjectEntityMap[it.name] = it }
         return subjectRepository.save(newSubjectEntity)
     }
 }
