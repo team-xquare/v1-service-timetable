@@ -3,16 +3,14 @@ package com.xquare.v1servicetimetable.cron
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.xquare.v1servicetimetable.common.feign.client.NeisClient
 import com.xquare.v1servicetimetable.cron.dto.TimetableElement
 import com.xquare.v1servicetimetable.cron.properties.NeisProperties
-import com.xquare.v1servicetimetable.common.feign.client.NeisClient
 import org.springframework.stereotype.Component
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.time.temporal.TemporalAdjusters
-import java.util.Locale
 
 @Component
 class TimetableCron(
