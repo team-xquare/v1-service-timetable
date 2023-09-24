@@ -1,17 +1,15 @@
 package com.xquare.v1servicetimetable.scheduler
 
 import com.xquare.v1servicetimetable.common.enums.TableType
-import com.xquare.v1servicetimetable.config.exception.ConfigNotFoundException
 import com.xquare.v1servicetimetable.config.out.ConfigRepository
 import com.xquare.v1servicetimetable.cron.TimetableCron
-import com.xquare.v1servicetimetable.subject.exception.SubjectNotFoundException
 import com.xquare.v1servicetimetable.subject.out.SubjectEntity
 import com.xquare.v1servicetimetable.subject.out.SubjectRepository
 import com.xquare.v1servicetimetable.time.exception.TimeNotFoundException
 import com.xquare.v1servicetimetable.time.out.TimeRepository
 import com.xquare.v1servicetimetable.timetable.out.TimetableEntity
 import com.xquare.v1servicetimetable.timetable.out.TimetableRepository
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -22,24 +20,26 @@ class TimetableScheduler(
     private val timetableCron: TimetableCron,
     private val subjectRepository: SubjectRepository,
     private val timetableRepository: TimetableRepository,
-    private val timeRepository: TimeRepository
+    private val timeRepository: TimeRepository,
+    @Value("\${subject.image}")
+    private val defaultSubjectImage: String,
 ) {
 
     @Transactional
     @Scheduled(cron = "0 59 23 * * SAT", zone = "Asia/Seoul")
     fun timetableScheduler() {
-        val config = configRepository.findByIdOrNull(1) ?: throw ConfigNotFoundException
         timetableRepository.deleteAll()
 
         val subjectEntityList = subjectRepository.findAll()
         val timeEntityList = timeRepository.findAllByType(TableType.DEFAULT)
+
         for (i in 1..3) {
-            for (j in 1..config.classCount) {
+            for (j in 1..4) {
                 val timetableEntityList: List<TimetableEntity> =
                     timetableCron.timetableCron(grade = i.toString(), classNum = j.toString())
                         .map { timetable ->
                             val subjectEntity: SubjectEntity = subjectEntityList.find { it.name == timetable.subject }
-                                ?: throw SubjectNotFoundException
+                                ?: getOrCreateSubjectEntity(timetable.subject)
 
                             val timeEntity = timeEntityList.find { it.period == timetable.period }
                                 ?: throw TimeNotFoundException
@@ -51,11 +51,20 @@ class TimetableScheduler(
                                 classNum = j,
                                 period = timetable.period,
                                 subjectEntity = subjectEntity,
-                                timeEntity = timeEntity
+                                timeEntity = timeEntity,
                             )
                         }
                 timetableRepository.saveAll(timetableEntityList)
             }
         }
+    }
+
+    private fun getOrCreateSubjectEntity(subjectName: String): SubjectEntity {
+        return subjectRepository.findByName(subjectName) ?: subjectRepository.save(
+            SubjectEntity(
+                name = subjectName,
+                profile = defaultSubjectImage,
+            )
+        )
     }
 }
