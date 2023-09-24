@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface SubjectRepository : CrudRepository<SubjectEntity, UUID>
+interface SubjectRepository : CrudRepository<SubjectEntity, UUID> {
+    fun findByName(subjectName: String): SubjectEntity?
+}
