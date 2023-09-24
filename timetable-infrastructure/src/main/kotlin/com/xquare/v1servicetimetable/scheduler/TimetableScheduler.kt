@@ -31,26 +31,28 @@ class TimetableScheduler(
         val subjectEntityList = subjectRepository.findAll()
         val timeEntityList = timeRepository.findAllByType(TableType.DEFAULT)
 
-        for (i in 1..3) {
-            for (j in 1..4) {
-                val timetableEntityList = timetableCron.timetableCron(grade = i.toString(), classNum = j.toString())
-                    .map { timetable ->
-                        val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
-                            ?: getOrCreateSubjectEntity(timetable.subject)
+        for (grade in 1..3) {
+            for (classNum in 1..4) {
+                val timetableEntityList = timetableCron.timetableCron(
+                    grade = grade.toString(),
+                    classNum = classNum.toString(),
+                ).map { timetable ->
+                    val subjectEntity = subjectEntityList.find { it.name == timetable.subject }
+                        ?: getOrCreateSubjectEntity(timetable.subject)
 
-                        val timeEntity = timeEntityList.find { it.period == timetable.period }
-                            ?: throw TimeNotFoundException
+                    val timeEntity = timeEntityList.find { it.period == timetable.period }
+                        ?: throw TimeNotFoundException
 
-                        TimetableEntity(
-                            weekDay = timetable.date.dayOfWeek.value,
-                            date = timetable.date,
-                            grade = i,
-                            classNum = j,
-                            period = timetable.period,
-                            subjectEntity = subjectEntity,
-                            timeEntity = timeEntity,
-                        )
-                    }
+                    TimetableEntity(
+                        weekDay = timetable.date.dayOfWeek.value,
+                        date = timetable.date,
+                        grade = grade,
+                        classNum = classNum,
+                        period = timetable.period,
+                        subjectEntity = subjectEntity,
+                        timeEntity = timeEntity,
+                    )
+                }
                 timetableRepository.saveAll(timetableEntityList)
             }
         }
